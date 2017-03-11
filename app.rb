@@ -3,12 +3,14 @@ require 'telegram/bot'
 require 'json'
 require 'sinatra'
 
+set :views, settings.root + '/views'
 DB = Sequel.connect('sqlite://pr.db')
 
 
 get '/' do
-	requests = DB[:pull_request]
-
+	request_table = DB[:pull_request]
+	requests = request_table.all
+	haml :index, :locals => {:reqs => requests}
 end
 
 post '/gh-event' do
