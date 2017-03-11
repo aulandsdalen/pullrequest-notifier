@@ -4,4 +4,5 @@ source 'https://rubygems.org' do
 	gem 'telegram-bot-ruby'
 	gem 'sqlite3'
 	gem 'sequel'
+	gem 'haml'
 end
