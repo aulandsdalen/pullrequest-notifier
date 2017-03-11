@@ -1,0 +1,20 @@
+!!!
+
+%table{:border => "1"}
+	%tbody
+		%tr
+			%td= 'id'
+			%td= 'is_open'
+			%td= 'is_merged'
+			%td= 'creator'
+			%td= 'created_at'
+			%td= 'link'
+	- locals[:reqs].each do |req|
+		%tr
+			%td= req[:id]
+			%td= req[:is_open]
+			%td= req[:is_merged]
+			%td= req[:creator]
+			%td= req[:created_at]
+			%td
+				%a{:href => req[:link]} #{req[:link]}
