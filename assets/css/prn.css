@@ -1,0 +1,83 @@
+table {
+	border-collapse: collapse;
+	width: 100%;
+	border-color: #7c7c7c;
+	border: 0;
+	border-spacing: 5px;
+}
+
+td {
+	height: 20pt;
+	padding: 10px;
+	border:none;
+}
+tr {
+	border: none;
+}
+
+tr:hover {
+	background-color: #ccc;
+}
+
+.merged {
+	background-color: #5be587;
+}
+.header {
+	font-size: 20pt;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+.subheader {
+	font-size: 16pt;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.name {
+	font-size: 20pt;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-weight: bolder;
+}
+
+.group {
+	font-size: 14pt;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+.github_username {
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+#container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 90vh;
+}
+
+.loginform {
+	width: 250px;
+	margin: 15px;
+	padding: 15px; 
+	padding-top: 0px;
+	text-align: left;
+	border-radius: 10px;
+	background-color: #eee;
+}
+.login_input {
+	float: right;
+	font-size: 16pt;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.loginrow {
+	margin-bottom: 20pt;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
+.loginbtn {
+	border: 1px solid #777777;
+ 	background: #6e9e2d;
+	color: white;
+	font-weight: bold;
+	font-size: 12pt;
+	padding: 4px;
+	border-radius: 4px;
+}

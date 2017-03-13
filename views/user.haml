@@ -1,0 +1,18 @@
+!!!
+%html
+	%head
+		%link{:rel => "stylesheet", :href=>"/css/prn.css", :type=>"text/css"}
+	%body
+		%p
+			%p.name= locals[:data][:realname] 
+			- if locals[:data][:group_name]
+				%p.group #{locals[:data][:group_name]}
+			- else
+				%p.group= 'no group assigned'
+		%p
+			%p.github_username github: #{locals[:data][:username]}
+		- if locals[:reqs].length > 0
+			%p.subheader Pulls
+			= haml :pulls_table, :locals => locals
+		- else
+			%p.subheader User has no pulls

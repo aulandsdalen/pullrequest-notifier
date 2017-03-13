@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add student</title>
+</head>
+<body>
+	<form id="adduser_form" action="">
+		<p>
+			<label>Name: </label>
+			<input type="text" name="realname">
+		</p>
+		<p>
+			<label>GitHub: </label>
+			<input type="text" name="username">
+		</p>
+		<p>
+			<select class="group_select" name="group_id"></select>
+		</p>
+	</form>
+	<a href="#" class="adduser_btn">Add</a>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+	<script>
+		$.getJSON("/groups.json", function(json){
+			$('.group_select').empty();
+			$('.group_select').append($('<option>').text("Group"));
+			$.each(json, function(i, obj) {
+				$('.group_select').append($('<option>').text(obj.group_name).attr('value', obj.gid));
+			});
+		});
+		$('.adduser_btn').click(function(){
+			var $inputs = $('#adduser_form :input');
+			var values = {};
+			$inputs.each(function(){
+				values[this.name] = $(this).val();
+			});
+			console.log(JSON.stringify(values));
+			$.post("/create-student", JSON.stringify(values)).done(function(data){
+				alert(JSON.stringify(data));
+			});
+			console.log(jQuery.isPlainObject(values));
+		});
+	</script>
+</body>
+</html>

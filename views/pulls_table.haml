@@ -1,0 +1,25 @@
+%table
+	%tbody 
+		%tr
+			%td= 'id'
+			%td= 'is_open'
+			%td= 'is_merged'
+			%td= 'owner_id'
+			%td= 'name'
+			%td= 'created_at'
+			%td= 'link'
+	- locals[:reqs].each do |req|
+		%tr{:class => ("merged" if req[:is_merged])}
+			%td= req[:id]
+			%td= req[:is_open]
+			%td= req[:is_merged]
+			%td= req[:owner_id]
+			%td
+				- if req[:realname] == 'UNKNOWN'
+					%i
+						%a{:href => '/students/' + req[:uid].to_s} #{req[:username]}
+				- else
+					%a{:href => '/students/' + req[:uid].to_s } #{req[:realname]}
+			%td= req[:created_at]
+			%td
+				%a{:href => req[:link]} #{req[:link]}
