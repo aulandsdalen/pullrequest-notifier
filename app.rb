@@ -96,6 +96,7 @@ post '/gh-event' do
 	elsif (action == 'closed' && !is_merged)
 		logger.info "pull request closed without merging"
 		DB[:pulls].where(:link => url).update(:is_open => false)
+		{:status => true}.to_json
 	end
 end
 
