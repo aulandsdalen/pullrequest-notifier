@@ -12,7 +12,7 @@ task :initdb do
 	username = ENV["username"]
 	password = ENV["password"]
 	puts "initializing database #{dbname}"
-	DB = Sequel.connect("postgres://#{username}@localhost:5432/#{dbname}")
+	DB = Sequel.connect(ENV['DATABASE_URL'])
 	puts "creating pulls table"
 	DB.create_table :pulls do 
 		primary_key :id

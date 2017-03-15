@@ -3,7 +3,7 @@ set :public_folder, 'assets'
 set :session_fail, '/login'
 set :bind, '0.0.0.0'
 
-DB = Sequel.connect('postgres://quantumpeppermint@localhost:5432/jc')
+DB = Sequel.connect(ENV['DATABASE_URL'])
 
 get '/' do
 	haml :index, :locals  => {:login => session[:login]}
