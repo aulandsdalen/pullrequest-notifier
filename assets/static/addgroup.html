@@ -7,20 +7,12 @@
 	<form id="addgroup_form" action="">
 		<p>
 			<label>Group name: </label>
-			<input type="text" name="groupname">
+			<input type="text" name="group_name">
 		</p>
 	</form>
 	<a href="#" class="addgroup_btn">Add</a>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
 	<script>
-	/*
-		$.getJSON("/groups.json", function(json){
-			$('.group_select').empty();
-			$('.group_select').append($('<option>').text("Group"));
-			$.each(json, function(i, obj) {
-				$('.group_select').append($('<option>').text(obj.group_name).attr('value', obj.gid));
-			});
-		});*/
 		$('.addgroup_btn').click(function(){
 			var $inputs = $('#addgroup_form :input');
 			var values = {};

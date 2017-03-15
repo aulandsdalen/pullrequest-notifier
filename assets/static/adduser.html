@@ -24,6 +24,8 @@
 			$('.group_select').empty();
 			$('.group_select').append($('<option>').text("Group"));
 			$.each(json, function(i, obj) {
+				if (!obj.gid)
+					obj.gid = 'nogrp'
 				$('.group_select').append($('<option>').text(obj.group_name).attr('value', obj.gid));
 			});
 		});
