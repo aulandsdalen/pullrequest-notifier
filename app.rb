@@ -1,15 +1,9 @@
-require 'sequel'
-require 'json'
-require 'sinatra'
-require 'bcrypt'
-require 'sinatra/session'
-
 set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
 set :bind, '0.0.0.0'
 
-DB = Sequel.connect('sqlite://pr.db')
+DB = Sequel.connect('postgres://quantumpeppermint@localhost:5432/jc')
 
 get '/' do
 	haml :index, :locals  => {:login => session[:login]}

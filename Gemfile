@@ -1,7 +1,7 @@
 source 'https://rubygems.org' do
 	gem 'sinatra'
 	gem 'json'
-	gem 'sqlite3'
+	gem 'pg'
 	gem 'sequel'
 	gem 'haml'
 	gem 'sinatra-session'
