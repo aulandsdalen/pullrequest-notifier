@@ -2,15 +2,15 @@
 
 %html
 	%head
-		%link{:rel => "stylesheet", :href => "/css/prn.css", :type => "text/css"}
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css", :type => "text/css"}
 	%body
-		%div#container
-			%div.loginform
-				%form{:action => "/login", :method => "post"}
-					%p.loginrow
-						%label{:for => "login"}
-						%input.login_input{:type => "text", :name => "login", :class => "loginfield", :placeholder => "Login"}
-					%p.loginrow
-						%label{:for => "password"}
-						%input.login_input{:type => "password", :name => "password", :class => "passwordfield", :placeholder => "Password"}
-					%button{:type => "submit", :value => "login", :class => "loginbtn"} Login
+		.container
+			%form.form-signin{:action => "/login", :method => "post"}
+				%h3.form-signin-heading= "Log in to JC"
+				%p.loginrow
+					%label{:for => "login"}
+					%input.form-control{:type => "text", :name => "login", :placeholder => "Login", :required, :autofocus}
+				%p.loginrow
+					%label{:for => "password"}
+					%input.form-control{:type => "password", :name => "password", :placeholder => "Password"}
+				%button.btn.btn-lg.btn-primary.btn-block{:type => "submit", :value => "login", :class => "loginbtn"} Login
