@@ -1,15 +1,16 @@
-%table
-	%tbody 
+%table.table.table-striped.table-hover
+	%thead
 		%tr
-			%td= 'id'
-			%td= 'is_open'
-			%td= 'is_merged'
-			%td= 'owner_id'
-			%td= 'name'
-			%td= 'created_at'
-			%td= 'link'
+				%td= '#'
+				%td= 'is open'
+				%td= 'is merged'
+				%td= 'owner id'
+				%td= 'name'
+				%td= 'created at'
+				%td= 'link'
+	%tbody 
 	- locals[:reqs].each do |req|
-		%tr{:class => ("merged" if req[:is_merged])}
+		%tr{:class => ("success" if req[:is_merged])}
 			%td= req[:id]
 			%td= req[:is_open]
 			%td= req[:is_merged]
