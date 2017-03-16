@@ -6,7 +6,11 @@ set :bind, '0.0.0.0'
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
 get '/' do
-	haml :index, :locals  => {:login => session[:login]}
+	if session?
+		redirect '/requests'
+	else
+		redirect '/login'
+	end
 end
 
 get '/login' do
@@ -22,7 +26,7 @@ get '/requests' do
 	session!
 	request_table = DB[:pulls].join(:names, :uid => :owner_id)
 	requests = request_table.all
-	haml :pulls, :locals => {:reqs => requests}
+	haml :pulls, :locals => {:reqs => requests, :login =>session[:login]}
 end
 
 get '/students' do

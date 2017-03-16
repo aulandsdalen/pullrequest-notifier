@@ -1,7 +1,16 @@
 !!!
 %html
 	%head
-		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/prn.css"}
+		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/bootstrap"}
 	%body
-		%p.header= 'Pulls'
-		= haml :pulls_table, :locals => locals
+		.container
+			.row
+				.col-md-4
+					%p.header= 'Pulls'
+				.col-md-4.col-md-offset-4
+					%p= "welcome", + locals[:login]
+					%p
+						%a{:href=> "/logout"} Logout
+			.row
+				.col-md-12
+					= haml :pulls_table, :locals => locals
