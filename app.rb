@@ -2,7 +2,7 @@ set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
 set :bind, '0.0.0.0'
-VERSION = '0.x.x'
+VERSION = `git rev-parse --short HEAD`
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
