@@ -8,7 +8,7 @@
 				.col-md-4
 					%p.header= 'Pulls'
 				.col-md-4.col-md-offset-4
-					%p= "welcome", + locals[:login]
+					%p= "welcome, " + locals[:login]
 					%p
 						%a{:href=> "/logout"} Logout
 			.row
