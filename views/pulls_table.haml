@@ -2,8 +2,7 @@
 	%thead
 		%tr
 			%td= '#'
-			%td= 'is open'
-			%td= 'is merged'
+			%td= 'status'
 			%td= 'owner id'
 			%td= 'name'
 			%td= 'created at'
@@ -12,8 +11,13 @@
 	- locals[:reqs].each do |req|
 		%tr{:class => ("success" if req[:is_merged])}
 			%td= req[:id]
-			%td= req[:is_open]
-			%td= req[:is_merged]
+			%td 
+			- if (req[:is_open])
+				= "pending"
+			- elsif (req[:is_merged])
+				= "accepted"
+			- else
+				= "declined"
 			%td= req[:owner_id]
 			%td
 				- if req[:realname] == 'UNKNOWN'
