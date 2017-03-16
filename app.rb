@@ -2,6 +2,7 @@ set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
 set :bind, '0.0.0.0'
+VERSION = '0.x.x'
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
@@ -26,7 +27,7 @@ get '/requests' do
 	session!
 	request_table = DB[:pulls].join(:names, :uid => :owner_id)
 	requests = request_table.all
-	haml :pulls, :locals => {:reqs => requests, :login =>session[:login]}
+	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => VERSION}
 end
 
 get '/students' do

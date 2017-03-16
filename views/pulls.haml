@@ -2,15 +2,17 @@
 %html
 	%head
 		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/bootstrap.css"}
+		%title= locals[:version]
 	%body
+		%nav.navbar.navbar-static-top
+			.container
+				.navbar-header
+					%p.navbar-brand= 'JC v. ' + locals[:version]
+				.navbar.navbar-collapse.collapse
+					%ul.nav.navbar-nav.navbar-right
+						%li
+							%a{:href => "/logout"} Log out
 		.container
-			.row
-				.col-md-4
-					%p.header= 'Pulls'
-				.col-md-4.col-md-offset-4
-					%p= "welcome, " + locals[:login]
-					%p
-						%a{:href=> "/logout"} Logout
 			.row
 				.col-md-12
 					= haml :pulls_table, :locals => locals
