@@ -4,11 +4,11 @@
 		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/bootstrap.css"}
 		%title= locals[:version]
 	%body
-		%nav.navbar.navbar-static-top
+		%nav.navbar.navbar-static-top.navbar-inverse
 			.container
 				.navbar-header
-					%p.navbar-brand= 'JC v. ' + locals[:version]
-				.navbar.navbar-collapse.collapse
+					%span.navbar-brand= 'JC v. ' + locals[:version]
+				.navbar-collapse.collapse
 					%ul.nav.navbar-nav.navbar-right
 						%li
 							%a{:href => "/logout"} Log out
