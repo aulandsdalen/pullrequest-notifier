@@ -6,5 +6,5 @@ source 'https://rubygems.org' do
 	gem 'haml'
 	gem 'sinatra-session'
 	gem 'bcrypt'
-	gem 'thin'
+	gem 'puma'
 end
