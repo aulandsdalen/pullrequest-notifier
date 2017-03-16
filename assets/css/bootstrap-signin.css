@@ -43,3 +43,8 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.form-signin-heading {
+  color: #eee;
+  text-shadow: -2px 2px 5px rgba(0, 0, 0, 1);
+}
