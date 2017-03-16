@@ -12,12 +12,12 @@
 		%tr{:class => ("success" if req[:is_merged])}
 			%td= req[:id]
 			%td 
-			- if (req[:is_open])
-				= "pending"
-			- elsif (req[:is_merged])
-				= "accepted"
-			- else
-				= "declined"
+				- if (req[:is_open])
+					= "pending"
+				- elsif (req[:is_merged])
+					= "accepted"
+				- else
+					= "declined"
 			%td= req[:owner_id]
 			%td
 				- if req[:realname] == 'UNKNOWN'
