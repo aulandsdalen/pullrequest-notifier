@@ -47,22 +47,13 @@ get '/students/:sid' do
 	haml :user, :locals => {:data => user, :reqs => pulls}
 end
 
-post '/login' do
-	login = DB[:mgmt].where(:login => params[:login]).first
-	redirect '/login' unless login
-	hashed_pwd = BCrypt::Password.new(login[:hash])
-	if hashed_pwd == params[:password]
-		session_start!
-		session[:login] = params[:login]
-		redirect '/'
-	else
-		redirect '/login'
-	end
-end
-
 get '/logout' do
 	session_end!
 	redirect '/'
+end
+
+get '/signup' do
+	haml :signup
 end
 
 post '/gh-event' do
@@ -96,6 +87,20 @@ post '/gh-event' do
 		logger.info "pull request closed without merging"
 		DB[:pulls].where(:link => url).update(:is_open => false)
 		{:status => true}.to_json
+	end
+end
+
+
+post '/login' do
+	login = DB[:mgmt].where(:login => params[:login]).first
+	redirect '/login' unless login
+	hashed_pwd = BCrypt::Password.new(login[:hash])
+	if hashed_pwd == params[:password]
+		session_start!
+		session[:login] = params[:login]
+		redirect '/'
+	else
+		redirect '/login'
 	end
 end
 
