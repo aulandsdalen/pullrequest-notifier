@@ -1,7 +1,6 @@
 set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
-set :bind, '0.0.0.0'
 VERSION = ENV['HEROKU_RELEASE_VERSION']
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
@@ -101,10 +100,12 @@ post '/gh-event' do
 	elsif (action == 'closed' && is_merged)
 		logger.info "pull request merged"
 		DB[:pulls].where(:link => url).update(:is_open => false, :is_merged => true)
+		send_status_email(user[:email], true)
 		{:status => true}.to_json
 	elsif (action == 'closed' && !is_merged)
 		logger.info "pull request closed without merging"
 		DB[:pulls].where(:link => url).update(:is_open => false)
+		send_status_email(user[:email], false)
 		{:status => true}.to_json
 	end
 end
