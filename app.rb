@@ -56,6 +56,25 @@ get '/signup' do
 	haml :signup, :locals => {:version => VERSION}
 end
 
+get '/signup-success' do
+	haml :signup_success
+end
+
+post '/signup' do
+	logger.info params
+	realname = params[:realname]
+	username = params[:username]
+	email = params[:email]
+	group_id = params[:group]
+	DB[:names].insert(:group_id => group_id,
+					  :realname => realname,
+					  :username => username,
+					  :email => email)
+	send_welcome_email(email, username, realname)
+	redirect '/signup-success'
+end
+
+
 post '/gh-event' do
 	payload = JSON.parse(request.body.read)
 	action = payload['action']

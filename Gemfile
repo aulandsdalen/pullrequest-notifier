@@ -7,4 +7,5 @@ source 'https://rubygems.org' do
 	gem 'sinatra-session'
 	gem 'bcrypt'
 	gem 'puma'
+	gem 'pony'
 end

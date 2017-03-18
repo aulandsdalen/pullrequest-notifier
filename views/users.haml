@@ -11,6 +11,7 @@
 					%td= 'group'
 					%td= 'name'
 					%td= 'github'
+					%td= 'email'
 			- locals[:students].each do |student|
 				%tr
 					%td= student[:uid]
@@ -22,3 +23,4 @@
 						- else
 							%a{:href => '/students/' + student[:uid].to_s } #{student[:realname]}
 					%td= student[:username]
+					%td= student[:email]
