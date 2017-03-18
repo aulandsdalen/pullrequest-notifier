@@ -53,7 +53,7 @@ get '/logout' do
 end
 
 get '/signup' do
-	haml :signup
+	haml :signup, :locals => {:version => VERSION}
 end
 
 post '/gh-event' do
