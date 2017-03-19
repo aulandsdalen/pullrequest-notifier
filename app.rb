@@ -24,7 +24,7 @@ end
 
 get '/requests' do
 	session!
-	request_table = DB[:pulls].join(:names, :uid => :owner_id)
+	request_table = DB[:pulls].join(:names, :uid => :owner_id).order(Sequel.desc(:created_at))
 	requests = request_table.all
 	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => VERSION}
 end
