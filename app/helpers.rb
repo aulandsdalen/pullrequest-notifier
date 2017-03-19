@@ -16,7 +16,7 @@ def send_welcome_email(email, login, name)
 		})
 end
 
-def send_status_email(email, accepted)
+def send_status_email(email, url, accepted)
 	Pony.mail({
 		:to => email,
 		:via => :smtp,
@@ -29,6 +29,6 @@ def send_status_email(email, accepted)
 		    :authentication       => :plain, # :plain, :login, :cram_md5, no auth by default
 		    :domain               => "jc.mirea.ru" # the HELO domain provided by the client to the server
 			},
-		:html_body => (haml :requestemailtemplate, :locals => {:success => accepted}),
+		:html_body => (haml :requestemailtemplate, :locals => {:success => accepted, :url => url}),
 		})
 end

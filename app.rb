@@ -61,16 +61,23 @@ end
 
 post '/signup' do
 	logger.info params
-	realname = params[:realname]
-	username = params[:username]
-	email = params[:email]
-	group_id = params[:group]
+	payload = JSON.parse(request.body.read)
+	realname = payload['realname']
+	username = payload['username']
+	email = payload['email']
+	group_id = payload['group']
+	unless(DB[:names].where(:username => username).all.empty?)
+		return {:status => false, :reason => "user #{username} already exists"}.to_json
+	end
+	unless(DB[:names].where(:email => email).all.empty?)
+		return {:status => false, :reason => "user with email #{email} already exists"}.to_json
+	end
 	DB[:names].insert(:group_id => group_id,
 					  :realname => realname,
 					  :username => username,
 					  :email => email)
 	send_welcome_email(email, username, realname)
-	redirect '/signup-success'
+	{:status => true}.to_json
 end
 
 
@@ -105,7 +112,7 @@ post '/gh-event' do
 	elsif (action == 'closed' && !is_merged)
 		logger.info "pull request closed without merging"
 		DB[:pulls].where(:link => url).update(:is_open => false)
-		send_status_email(user[:email], false)
+		send_status_email(user[:email], url, false)
 		{:status => true}.to_json
 	end
 end

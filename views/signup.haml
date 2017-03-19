@@ -9,7 +9,7 @@
 			.row
 				.col-md-4
 					%h3.signupbanner.inverse Регистрация
-					%form{:action => "/signup", :method => "post"}
+					%form{:id => "signup-form"}
 						.form-group
 							%label{:for => "fullname", :class => "inverse"} Полное имя
 							%input{:type => "text", :id => "realname", :class => "form-control", :placeholder => "Константин Константинопольский", :name => "realname"}/
@@ -25,8 +25,8 @@
 							%label{:for => "", :class => "inverse"} Группа
 							%select{:name => "group", :id => "group-select", :class => "form-control"}
 								%option{:value => "#"} Группа
-						.btn-container
-							%button{:type => "submit", :class => "btn btn-primary btn-block signup-button"} Зарегистрироваться
+					.btn-container
+						%button{:type => "submit", :class => "btn btn-primary btn-block signup-button"} Зарегистрироваться
 		%footer.footer
 			.container
 				%p.version= "JC " + locals[:version]

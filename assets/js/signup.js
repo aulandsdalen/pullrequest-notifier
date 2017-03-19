@@ -22,3 +22,15 @@ $(document).ready(function(){
 		}
 	});
 });
+
+$('.signup-button').click(function(){
+	var $inputs = $('#signup-form :input');
+	var values = {};
+	$inputs.each(function(){
+		values[this.name] = $(this).val();
+	});
+	console.log(JSON.stringify(values));	
+	$.post('/signup', JSON.stringify(values)).done(function(data){
+		console.log(JSON.stringify(data));
+	});
+});
