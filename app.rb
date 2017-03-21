@@ -80,6 +80,9 @@ post '/signup' do
 	unless(DB[:names].where(:email => email).all.empty?)
 		return {:status => false, :reason => "user with email #{email} already exists"}.to_json
 	end
+	unless (email.email?)
+		return {:status => false, :reason => "#{email} is not an email address"}.to_json
+	end
 	DB[:names].insert(:group_id => group_id,
 					  :realname => realname,
 					  :username => username,

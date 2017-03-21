@@ -1,3 +1,14 @@
+# extend String class & add email? method
+
+class String
+	def email?
+		!((self =~ URI::MailTo::EMAIL_REGEXP).nil?)
+	end
+end
+
+
+# mail helpers
+
 def send_welcome_email(email, login, name)
 	Pony.mail({
 		:to => email,
