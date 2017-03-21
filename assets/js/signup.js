@@ -31,6 +31,13 @@ $('.signup-button').click(function(){
 	});
 	console.log(JSON.stringify(values));	
 	$.post('/signup', JSON.stringify(values)).done(function(data){
-		console.log(JSON.stringify(data));
+		var response = $.parseJSON(data)
+		console.log(response);
+		if(response['status'] == true) {
+			alert("Пользователь зарегистрирован");
+		}
+		else {
+			alert("При регистрации произошла ошибка: " + response['reason']);
+		}
 	});
 });

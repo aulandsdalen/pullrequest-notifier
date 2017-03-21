@@ -16,3 +16,5 @@
 			= haml :pulls_table, :locals => locals
 		- else
 			%p.subheader User has no pulls
+		%p
+			%a{:href => "/students/#{locals[:data][:uid]}/edit"} Edit

@@ -46,6 +46,14 @@ get '/students/:sid' do
 	haml :user, :locals => {:data => user, :reqs => pulls}
 end
 
+get '/students/:sid/edit' do
+	session!
+	users_table = DB[:names].left_outer_join(:groups, :gid => :group_id)
+	user = users_table.where(:uid => params[:sid]).first
+	groups = DB[:groups].all
+	haml :user_edit, :locals => {:user => user, :groups => groups}
+end
+
 get '/logout' do
 	session_end!
 	redirect '/'
@@ -107,7 +115,7 @@ post '/gh-event' do
 	elsif (action == 'closed' && is_merged)
 		logger.info "pull request merged"
 		DB[:pulls].where(:link => url).update(:is_open => false, :is_merged => true)
-		send_status_email(user[:email], true)
+		send_status_email(user[:email], url, true)
 		{:status => true}.to_json
 	elsif (action == 'closed' && !is_merged)
 		logger.info "pull request closed without merging"
@@ -148,7 +156,7 @@ get '/requests/:id.json' do
 end
 
 get '/groups.json' do
-	DB[:groups].all.to_json
+	DB[:groups].order(Sequel.asc(:group_name)).all.to_json
 end
 
 get '/students.json' do
@@ -179,7 +187,9 @@ post '/create-student' do
 			if groups.empty?
 				{:status => 'fail', :reason => 'group does not exist'}.to_json
 			else
-				DB[:names].insert(:realname => payload['realname'], :username => payload['username'], :group_id => payload['group_id'])
+				DB[:names].insert(:realname => payload['realname'], 
+								  :username => payload['username'], 
+								  :group_id => payload['group_id'])
 				{:status => true}.to_json
 			end
 		else
@@ -195,11 +205,14 @@ post '/update-student' do
 		payload = JSON.parse(request.body.read) 
 		students = DB[:names].where(:username => payload["username"]).all
 		unless students.empty?
-			DB[:names].where(:username => payload["username"]).update(:realname => payload["realname"], :group_id => payload["group_id"])
+			DB[:names].where(:username => payload["username"]).update(:realname => payload["realname"], 
+																	  :group_id => payload["group_id"], 
+																	  :email => payload['email'])
 			{:status => true}.to_json
 		else
 			{:status => 'fail', :reason => 'username not found'}.to_json
 		end
+
 	else
 		{:status => 'fail', :reason => 'not logged in'}.to_json
 	end
