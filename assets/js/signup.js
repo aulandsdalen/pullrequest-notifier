@@ -32,8 +32,8 @@ $('.signup-button').click(function(){
 	console.log(JSON.stringify(values));	
 	$.post('/signup', JSON.stringify(values)).done(function(data){
 		var response = $.parseJSON(data)
-		console.log(response);
-		if(response["status"] == true) {
+		console.log(response["status"]);
+		if(response["status"]) {
 			alert("Пользователь зарегистрирован");
 		}
 		else {
