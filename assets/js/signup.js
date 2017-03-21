@@ -33,7 +33,7 @@ $('.signup-button').click(function(){
 	$.post('/signup', JSON.stringify(values)).done(function(data){
 		var response = $.parseJSON(data)
 		console.log(response);
-		if(response['status'] == true) {
+		if(response["status"] == true) {
 			alert("Пользователь зарегистрирован");
 		}
 		else {
