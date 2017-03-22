@@ -24,6 +24,8 @@ $(document).ready(function(){
 });
 
 $('.signup-button').click(function(){
+	$(this).hide();
+	$('.loader').show();
 	var $inputs = $('#signup-form :input');
 	var values = {};
 	$inputs.each(function(){
@@ -34,10 +36,12 @@ $('.signup-button').click(function(){
 		var response = $.parseJSON(data)
 		console.log(response["status"]);
 		if(response["status"]) {
-			alert("Пользователь зарегистрирован");
+			$('.loader').hide();
+			$('.btn-container').append("<div class='alert alert-success'><strong>Пользователь зарегистрирован</strong></div>")
 		}
 		else {
-			alert("При регистрации произошла ошибка: " + response['reason']);
+			$('.loader').hide();
+			$('.btn-container').append("<div class='alert alert-danger'><strong>При регистрации произошла ошибка: </strong>" + response['reason'] + "</div>");
 		}
 	});
 });

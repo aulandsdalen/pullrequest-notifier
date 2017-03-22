@@ -26,7 +26,9 @@
 							%select{:name => "group", :id => "group-select", :class => "form-control"}
 								%option{:value => "#"} Группа
 					.btn-container
-						%button{:type => "submit", :class => "btn btn-primary btn-block signup-button"} Зарегистрироваться
+						%button{:type => "submit", :class => "btn btn-primary btn-block signup-button"}
+							Зарегистрироваться
+						.loader{:hidden => "true"}
 		%footer.footer
 			.container
 				%p.version= "JC " + locals[:version]
