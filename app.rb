@@ -1,7 +1,7 @@
 set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
-VERSION = ENV['HEROKU_RELEASE_VERSION']
+VERSION = "0.2 build " + ENV['HEROKU_RELEASE_VERSION']
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
