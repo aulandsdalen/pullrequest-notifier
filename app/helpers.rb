@@ -43,3 +43,12 @@ def send_status_email(email, url, accepted)
 		:html_body => (haml :requestemailtemplate, :locals => {:success => accepted, :url => url}),
 		})
 end
+
+def getinfo
+	info = {
+		:platform => RUBY_PLATFORM,
+		:ruby_version => RUBY_VERSION,
+		:jc_version => VERSION, 
+		:env => ENV
+	}
+end

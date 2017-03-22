@@ -13,6 +13,11 @@ get '/' do
 	end
 end
 
+get '/info' do
+	session!
+	haml :info, :locals => {:info => getinfo}
+end
+
 get '/login' do
 	if session?
 		redirect '/'
@@ -20,7 +25,6 @@ get '/login' do
 		haml :login
 	end
 end
-
 
 get '/requests' do
 	session!

@@ -1,0 +1,20 @@
+!!!
+%html
+	%head
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}
+		%title Info
+	%body
+		.container
+			.row
+				.col-md-8
+					%h3= "Janechecks version " + locals[:info][:jc_version]
+					%p= "Running on " + locals[:info][:platform]
+					%p= "Ruby " + locals[:info][:ruby_version]
+					%h4= "ENVs: "
+					- locals[:info][:env].each_pair do |key, value|
+						%p
+							%small
+								%b= key
+								%span= " "
+								%span= value
+
