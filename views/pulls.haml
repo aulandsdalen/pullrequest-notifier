@@ -8,6 +8,14 @@
 			.container
 				.navbar-header
 					%span.navbar-brand= 'JC ' + locals[:version]
+				%ul.nav.navbar-nav
+					%li.active
+						%a{:href => "#"} Requests
+					%li
+						%a{:href => "/students"} Students
+					%li
+						%a{:href => "/info"} Info
+						
 				.navbar-collapse.collapse
 					%ul.nav.navbar-nav.navbar-right
 						%li
