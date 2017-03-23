@@ -7,7 +7,8 @@
 			.row
 				.col-md-6
 					%h3 Editing user record
-					%form{:action => ""}
+					%form{:id => "edit-form"}
+						%input{:type => "hidden", :name => "uid", :value => locals[:user][:uid]}
 						.form-group
 							%label{:for => "realname"} Full name
 							%input{:type => "text", :id => "realname", :class => "form-control", :name => "realname", :value => locals[:user][:realname]}/
@@ -19,6 +20,13 @@
 							%input{:type => "text", :id => "email", :class => "form-control", :name => "email", :value => locals[:user][:email]}/
 						.form-group
 							%label{:for => ""}= "Group (#{locals[:user][:group_name]})"
-							%select#group-select{:name => "", :class => "form-control"}
+							%select#group-select{:name => "", :class => "form-control", :name => "group"}
 								- locals[:groups].each do |group|
 									%option{:value => group[:gid], :selected => ("selected" if group[:group_name] == locals[:user][:group_name])}= group[:group_name]
+					.btn-container
+						%button{:type => "submit", :class => "btn btn-primary save-button"}
+							Save
+						.loader{:hidden => "true"}
+
+		%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"}
+		%script{:src => "/js/useredit.js"}

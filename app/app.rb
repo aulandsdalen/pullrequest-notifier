@@ -35,7 +35,7 @@ end
 
 get '/students' do
 	session!
-	students_table = DB[:names].left_outer_join(:groups, :gid => :group_id)
+	students_table = DB[:names].left_outer_join(:groups, :gid => :group_id).order(Sequel.asc(:uid))
 	students = students_table.all
 	haml :users, :locals =>  {:students => students}
 end
@@ -210,17 +210,18 @@ end
 post '/update-student' do
 	if session?
 		payload = JSON.parse(request.body.read) 
-		students = DB[:names].where(:username => payload["username"]).all
+		students = DB[:names].where(:uid => payload["uid"]).all
 		unless students.empty?
-			DB[:names].where(:username => payload["username"]).update(:realname => payload["realname"], 
-																	  :group_id => payload["group_id"], 
+			DB[:names].where(:uid => payload["uid"]).update(:realname => payload['realname'],
+																	  :username => payload['username'],
+																	  :group_id => payload['group'], 
 																	  :email => payload['email'])
 			{:status => true}.to_json
 		else
-			{:status => 'fail', :reason => 'username not found'}.to_json
+			{:status => false, :reason => 'user not found'}.to_json
 		end
 
 	else
-		{:status => 'fail', :reason => 'not logged in'}.to_json
+		{:status => false, :reason => 'not logged in'}.to_json
 	end
 end
