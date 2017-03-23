@@ -42,3 +42,9 @@ task :initdb do
 	end
 	DB[:mgmt].insert(:login => "aulandsdalen", :hash => "$2a$10$kUQA1ndJv2A5RjlLgIdzAejvmRYFlX1gpro4I0gVecBeQPF3ziL5W")
 end
+
+task :migrate do
+	Sequel.extension :migration, :core_extensions
+	DB = Sequel.connect(ENV['DATABASE_URL'])
+	Sequel::Migrator.apply(DB, 'migrations')
+end
