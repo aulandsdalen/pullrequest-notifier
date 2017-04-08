@@ -50,6 +50,10 @@ get '/students/:sid' do
 	haml :user, :locals => {:data => user, :reqs => pulls}
 end
 
+get '/students/:sid/delete' do 
+	"delete student #{params[:sid]}"
+end
+
 get '/students/:sid/edit' do
 	session!
 	users_table = DB[:names].left_outer_join(:groups, :gid => :group_id)
@@ -134,6 +138,7 @@ end
 
 
 post '/login' do
+	logger.info params
 	login = DB[:mgmt].where(:login => params[:login]).first
 	redirect '/login' unless login
 	hashed_pwd = BCrypt::Password.new(login[:hash])
@@ -169,6 +174,17 @@ end
 get '/students.json' do
 	DB[:names].all.to_json
 end
+
+get '/session-status.json' do
+	if session?
+		{:status => true,
+		 :message => "logged in"}.to_json
+	else
+		{:status => false,
+		 :message => "not logged in"}.to_json
+	end
+end
+
 
 post '/create-group' do
 	if session?
