@@ -15,7 +15,7 @@ end
 
 get '/info' do
 	session!
-	haml :info, :locals => {:info => getinfo}
+	haml :info, :locals => {:info => getinfo, :version => VERSION}
 end
 
 get '/login' do
@@ -37,7 +37,7 @@ get '/students' do
 	session!
 	students_table = DB[:names].left_outer_join(:groups, :gid => :group_id).order(Sequel.asc(:uid))
 	students = students_table.all
-	haml :users, :locals =>  {:students => students}
+	haml :users, :locals =>  {:students => students, :version => VERSION}
 end
 
 get '/students/:sid' do
@@ -47,7 +47,7 @@ get '/students/:sid' do
 	pulls = pulls_table.all
 	user = users_table.where(:uid => params[:sid])
 	user = user.first
-	haml :user, :locals => {:data => user, :reqs => pulls}
+	haml :user, :locals => {:data => user, :reqs => pulls, :version => VERSION}
 end
 
 get '/students/:sid/delete' do 
@@ -59,7 +59,7 @@ get '/students/:sid/edit' do
 	users_table = DB[:names].left_outer_join(:groups, :gid => :group_id)
 	user = users_table.where(:uid => params[:sid]).first
 	groups = DB[:groups].all
-	haml :user_edit, :locals => {:user => user, :groups => groups}
+	haml :user_edit, :locals => {:user => user, :groups => groups, :version => VERSION}
 end
 
 get '/logout' do

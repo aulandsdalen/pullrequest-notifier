@@ -3,6 +3,7 @@
 	%head
 		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}/
 	%body
+		= haml :navbar, :locals => {:version => locals[:version]}
 		.container
 			.row
 				.col-md-6

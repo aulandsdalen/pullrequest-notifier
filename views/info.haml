@@ -4,6 +4,7 @@
 		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}
 		%title Info
 	%body
+		= haml :navbar, :locals => {:version => locals[:version], :active_info => true}
 		.container
 			.row
 				.col-md-8

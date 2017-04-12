@@ -1,20 +1,25 @@
 !!!
 %html
 	%head
-		%link{:rel => "stylesheet", :href=>"/css/prn.css", :type=>"text/css"}
+		%link{:rel => "stylesheet", :href=>"/css/bootstrap.css", :type=>"text/css"}
 	%body
-		%p
-			%p.name= locals[:data][:realname] 
-			- if locals[:data][:group_name]
-				%p.group #{locals[:data][:group_name]}
+		= haml :navbar, :locals => {:version => locals[:version], :active_users => true}
+		.container
+			%p
+				%h4= locals[:data][:realname]
+				%p
+					%a{:href=>"https://github.com/#{locals[:data][:username]}", :target => "_blank"}= "#{locals[:data][:username]}"
+				- if locals[:data][:group_name]
+					%p.group #{locals[:data][:group_name]}
+				- else
+					%p 
+						%span.label.label-danger= 'No group assigned'
+			%p
+
+			- if locals[:reqs].length > 0
+				%p.subheader Pulls
+				= haml :pulls_table, :locals => locals
 			- else
-				%p.group= 'no group assigned'
-		%p
-			%p.github_username github: #{locals[:data][:username]}
-		- if locals[:reqs].length > 0
-			%p.subheader Pulls
-			= haml :pulls_table, :locals => locals
-		- else
-			%p.subheader User has no pulls
-		%p
-			%a{:href => "/students/#{locals[:data][:uid]}/edit"} Edit
+				%p.subheader User has no pulls
+			%p
+				%a{:href => "/students/#{locals[:data][:uid]}/edit"} Edit

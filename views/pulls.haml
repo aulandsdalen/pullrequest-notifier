@@ -4,22 +4,7 @@
 		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/bootstrap.css"}
 		%title= locals[:version]
 	%body
-		%nav.navbar.navbar-static-top.navbar-inverse
-			.container
-				.navbar-header
-					%span.navbar-brand= 'JC ' + locals[:version]
-				%ul.nav.navbar-nav
-					%li.active
-						%a{:href => "#"} Requests
-					%li
-						%a{:href => "/students"} Students
-					%li
-						%a{:href => "/info"} Info
-						
-				.navbar-collapse.collapse
-					%ul.nav.navbar-nav.navbar-right
-						%li
-							%a{:href => "/logout"} Log out
+		= haml :navbar, :locals => {:version => locals[:version], :active_requests => true}
 		.container
 			.row
 				.col-md-12

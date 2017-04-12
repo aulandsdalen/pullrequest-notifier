@@ -1,26 +1,30 @@
 !!!
 %html
 	%head
-		%link{:rel => "stylesheet", :href => "/css/prn.css", :type => "text/css"}
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css", :type => "text/css"}
 	%body
-		%p.header Students
-		%table
-			%tbody 
-				%tr
-					%td= 'uid'
-					%td= 'group'
-					%td= 'name'
-					%td= 'github'
-					%td= 'email'
-			- locals[:students].each do |student|
-				%tr
-					%td= student[:uid]
-					%td= student[:group_name]
-					%td 
-						- if student[:realname] == 'UNKNOWN'
-							%i
-								%a{:href => '/students/' + student[:uid].to_s} #{student[:username]}
-						- else
-							%a{:href => '/students/' + student[:uid].to_s } #{student[:realname]}
-					%td= student[:username]
-					%td= student[:email]
+		= haml :navbar, :locals => {:version => locals[:version], :active_users => true}
+		.container
+			.row
+				.col-md-12
+					%table.table.table-striped.table-hover
+						%thead 
+							%tr
+								%td= 'uid'
+								%td= 'group'
+								%td= 'name'
+								%td= 'github'
+								%td= 'email'
+						%tbody
+						- locals[:students].each do |student|
+							%tr
+								%td= student[:uid]
+								%td= student[:group_name]
+								%td 
+									- if student[:realname] == 'UNKNOWN'
+										%i
+											%a{:href => '/students/' + student[:uid].to_s} #{student[:username]}
+									- else
+										%a{:href => '/students/' + student[:uid].to_s } #{student[:realname]}
+								%td= student[:username]
+								%td= student[:email]
