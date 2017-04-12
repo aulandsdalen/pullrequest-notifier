@@ -6,13 +6,16 @@ $('.save-button').click(function(){
 	$inputs.each(function(){
 		values[this.name] = $(this).val();
 	});
-	console.log(JSON.stringify(values));	
+	/*console.log(JSON.stringify(values));	*/
 	$.post('/update-student', JSON.stringify(values)).done(function(data){
 		var response = $.parseJSON(data)
-		console.log(response["status"]);
+		/*console.log(response["status"]);*/
 		if(response["status"]) {
 			$('.loader').hide();
-			$('.btn-container').append("<div class='alert alert-success'><strong>Saved</strong></div>")
+			$('.btn-container').append("<div class='alert alert-success'><strong>Saved</strong></div>");
+			setTimeout(function(){
+				window.location.href = "/students";
+			}, 1000);
 		}
 		else {
 			$('.loader').hide();
