@@ -30,7 +30,7 @@ get '/login' do
 end
 
 get '/build-generator' do
-	haml :buildgen, :locals => {:version => "#{MAJOR_VERSION}.#{MINOR_VERSION}", :build => ENV['HEROKU_RELEASE_VERSION']}
+	haml :buildgen, :locals => {:version => "#{MAJOR_VERSION}.#{MINOR_VERSION}", :build => ENV['HEROKU_RELEASE_VERSION'], :format_version => 1}
 end
 
 get '/requests' do
@@ -54,11 +54,13 @@ get '/students/:sid' do
 	pulls = pulls_table.all
 	user = users_table.where(:uid => params[:sid])
 	user = user.first
+	redirect '/students' unless user
 	haml :user, :locals => {:data => user, :reqs => pulls, :version => APP_VERSION}
 end
 
 get '/students/:sid/delete' do 
-	"delete student #{params[:sid]}"
+	DB[:names].where(:uid => params[:sid]).delete
+	redirect '/students'
 end
 
 get '/students/:sid/edit' do

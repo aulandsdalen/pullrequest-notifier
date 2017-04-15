@@ -23,3 +23,13 @@
 				%p.subheader User has no pulls
 			%p
 				%a{:href => "/students/#{locals[:data][:uid]}/edit"} Edit
+			%p
+				%a{:href => "#", :id => "delete_user", :'data-user-id' => "#{locals[:data][:uid]}"} Delete
+		%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"}
+		:javascript
+			$('#delete_user').click(function(){
+				var delete_url = "/students/" + $(this).data('user-id') + "/delete";
+				if(confirm("Delete user?")) {
+					window.location.href = delete_url;
+				}
+			});
