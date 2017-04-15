@@ -40,7 +40,8 @@ def send_status_email(email, url, accepted)
 		    :authentication       => :plain, # :plain, :login, :cram_md5, no auth by default
 		    :domain               => "jc.mirea.ru" # the HELO domain provided by the client to the server
 			},
-		:html_body => (haml :requestemailtemplate, :locals => {:success => accepted, :url => url}),
+		:html_body => (haml :requestemailtemplate, :locals => {:success => accepted, :url => url}), 
+		:subject => "Результаты проверки задания"
 		})
 end
 
