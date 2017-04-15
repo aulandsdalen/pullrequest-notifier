@@ -1,7 +1,10 @@
 set :views, settings.root + '/views'
 set :public_folder, 'assets'
 set :session_fail, '/login'
-VERSION = "0.2 build " + ENV['HEROKU_RELEASE_VERSION']
+
+MAJOR_VERSION = 0
+MINOR_VERSION = 2
+APP_VERSION = "#{MAJOR_VERSION}.#{MINOR_VERSION} build " + ENV['HEROKU_RELEASE_VERSION']
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
@@ -15,7 +18,7 @@ end
 
 get '/info' do
 	session!
-	haml :info, :locals => {:info => getinfo, :version => VERSION}
+	haml :info, :locals => {:info => getinfo, :version => APP_VERSION}
 end
 
 get '/login' do
@@ -30,14 +33,14 @@ get '/requests' do
 	session!
 	request_table = DB[:pulls].join(:names, :uid => :owner_id).order(Sequel.desc(:created_at))
 	requests = request_table.all
-	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => VERSION}
+	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => APP_VERSION}
 end
 
 get '/students' do
 	session!
 	students_table = DB[:names].left_outer_join(:groups, :gid => :group_id).order(Sequel.asc(:uid))
 	students = students_table.all
-	haml :users, :locals =>  {:students => students, :version => VERSION}
+	haml :users, :locals =>  {:students => students, :version => APP_VERSION}
 end
 
 get '/students/:sid' do
@@ -47,7 +50,7 @@ get '/students/:sid' do
 	pulls = pulls_table.all
 	user = users_table.where(:uid => params[:sid])
 	user = user.first
-	haml :user, :locals => {:data => user, :reqs => pulls, :version => VERSION}
+	haml :user, :locals => {:data => user, :reqs => pulls, :version => APP_VERSION}
 end
 
 get '/students/:sid/delete' do 
@@ -59,7 +62,7 @@ get '/students/:sid/edit' do
 	users_table = DB[:names].left_outer_join(:groups, :gid => :group_id)
 	user = users_table.where(:uid => params[:sid]).first
 	groups = DB[:groups].all
-	haml :user_edit, :locals => {:user => user, :groups => groups, :version => VERSION}
+	haml :user_edit, :locals => {:user => user, :groups => groups, :version => APP_VERSION}
 end
 
 get '/logout' do
@@ -68,7 +71,7 @@ get '/logout' do
 end
 
 get '/signup' do
-	haml :signup, :locals => {:version => VERSION}
+	haml :signup, :locals => {:version => APP_VERSION}
 end
 
 get '/signup-success' do
