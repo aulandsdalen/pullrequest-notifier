@@ -1,0 +1,117 @@
+<html>
+<head>
+	<title>Build Generator</title>
+	<link rel="stylesheet" href="/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/loader.css">
+	<link rel="icon" href="/img/build.png">
+	<style>
+		.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 60px;
+/*background-color: #f5f5f5;*/
+}
+p.version {
+color: #333;
+font-size: smaller;
+}
+textarea {
+	resize: none;
+}
+.btn-container {
+margin-top: 2em;
+width: 30%;
+}
+.download-button {
+font-size: ;
+}
+.download-anchor {
+	display: none;
+}
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<h1 class="header">Build Generator for&nbsp;janechecks</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-5">
+				<form id="bgen-form">
+					<div class="form-group">
+						<label for="lang-selector" data-container="body" data-toggle="tooltip" data-placement="top" title="Для лабораторных по программированию лучше оставить по умолчанию">Язык</label>
+						<select name="lang" id="lang-selector" class="form-control">
+							<option value="lang_C">C</option>
+							<option value="lang_CXX">C++</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="files-input" data-container="body" data-toggle="tooltip" data-placement="top" title="Каждый файл будет компилироваться отдельно">Список файлов (по одному файлу на строку)</label>
+						<textarea class="form-control" name="files" id="files-input" cols="30" rows="10" placeholder="file1.c&#10;file2.c"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="flags-input" data-container="body" data-toggle="tooltip" data-placement="top" title="Опциональное поле. Например, если нужно прилинковать дополнительные библиотеки">Дополнительные флаги компилятора</label>
+						<input type="text" class="form-control" id="flags-input" name="flags" placeholder="-lpthread -lm">
+					</div>
+					<input type="hidden" name="app-version" value="0.2">
+					<input type="hidden" name="app-build" value="6573818">
+				</form>
+				<div class="btn-container">
+					<button type="submit" class="btn btn-primary btn-block download-button">Сгенерировать</button>
+					<div class="loader" hidden="true"></div>
+				</div>
+			</div>
+			<a id="download-anchor" ></a>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container">
+			<p class="version">JC 0.2 build 6573818</p>
+		</div>
+	</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script>
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+		$(".download-button").attr("disabled", true);
+		$('textarea').keyup(function(){
+			if($('#files-input').val().length > 0) {
+				$('.download-button').attr('disabled', false);
+			}
+			else {
+				$('.download-button').attr('disabled', true);
+			}
+		});
+	});
+	$('.download-button').click(function(){
+		$(this).hide();
+		$('.loader').show();
+		var $inputs = $('#bgen-form :input');
+		var values = {};
+		var output = null;
+		$inputs.each(function(){
+			values[this.name] = $(this).val();
+		});
+		values["files"] = values["files"].split("\n");
+		values["files"] = values["files"].filter(function(n){
+			return n !== "";
+		});
+		values["flags"] = values["flags"].split(" ");
+		values["flags"] = values["flags"].filter(function(n){
+			return n !== "";
+		});
+		output = JSON.stringify(values);
+		var dataStream = "data:text/json;charset=utf-8,"+encodeURIComponent(output);
+		$('#download-anchor').attr("href", dataStream);
+		$('#download-anchor').attr("download", "build.json");
+		document.getElementById("download-anchor").click(); /* for some reason, $("#download-anchor").click() won't work here */
+		$(this).show();
+		$('.loader').hide();	
+	});
+</script>
+</html>
