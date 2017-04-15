@@ -26,6 +26,7 @@
             .form-group
               %label{"data-container" => "body", "data-placement" => "top", "data-toggle" => "tooltip", :for => "flags-input", :title => "Опциональное поле. Например, если нужно прилинковать дополнительные библиотеки"} Дополнительные флаги компилятора
               %input#flags-input.form-control{:name => "flags", :placeholder => "-lpthread -lm", :type => "text"}/
+            %input{:name => "format-version", :type => "hidden", :value => locals[:format_version]}/
             %input{:name => "app-version", :type => "hidden", :value => locals[:version]}/
             %input{:name => "app-build", :type => "hidden", :value => locals[:build]}/
           .btn-container
