@@ -48,7 +48,7 @@ def getinfo
 	info = {
 		:platform => RUBY_PLATFORM,
 		:ruby_version => RUBY_VERSION,
-		:jc_version => VERSION, 
+		:jc_version => APP_VERSION, 
 		:env => ENV
 	}
 end
