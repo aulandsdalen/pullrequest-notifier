@@ -29,6 +29,10 @@ get '/login' do
 	end
 end
 
+get '/build-generator' do
+	haml :buildgen, :locals => {:version => "#{MAJOR_VERSION}.#{MINOR_VERSION}", :build => ENV['HEROKU_RELEASE_VERSION']}
+end
+
 get '/requests' do
 	session!
 	request_table = DB[:pulls].join(:names, :uid => :owner_id).order(Sequel.desc(:created_at))

@@ -1,0 +1,40 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Build Generator
+    %link{:href => "/css/bootstrap.css", :rel => "stylesheet"}/
+    %link{:href => "/css/loader.css", :rel => "stylesheet"}/
+    %link{:rel => "stylesheet", :href => "/css/build.css"}/
+    %link{:href => "/img/build.png", :rel => "icon"}/
+  %body
+    .container
+      .row
+        .col-md-5
+          %h1.header Build Generator for janechecks
+      .row
+        .col-md-5
+          %form#bgen-form
+            .form-group
+              %label{"data-container" => "body", "data-placement" => "top", "data-toggle" => "tooltip", :for => "lang-selector", :title => "Для лабораторных по программированию лучше оставить по умолчанию"} Язык
+              %select#lang-selector.form-control{:name => "lang"}
+                %option{:value => "lang_C"} C
+                %option{:value => "lang_CXX"} C++
+            .form-group
+              %label{"data-container" => "body", "data-placement" => "top", "data-toggle" => "tooltip", :for => "files-input", :title => "Каждый файл будет компилироваться отдельно"} Список файлов (по одному файлу на строку)
+              %textarea#files-input.form-control{:cols => "30", :name => "files", :placeholder => "file1.c\nfile2.c", :rows => "10"}
+            .form-group
+              %label{"data-container" => "body", "data-placement" => "top", "data-toggle" => "tooltip", :for => "flags-input", :title => "Опциональное поле. Например, если нужно прилинковать дополнительные библиотеки"} Дополнительные флаги компилятора
+              %input#flags-input.form-control{:name => "flags", :placeholder => "-lpthread -lm", :type => "text"}/
+            %input{:name => "app-version", :type => "hidden", :value => locals[:version]}/
+            %input{:name => "app-build", :type => "hidden", :value => locals[:build]}/
+          .btn-container
+            %button.btn.btn-primary.btn-block.download-button{:type => "submit"} Сгенерировать
+            .loader{:hidden => "true"}
+        %a#download-anchor
+    %footer.footer
+      .container
+        %p.version= "JC #{locals[:version]} build #{locals[:build]}"
+  %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"}
+  %script{:src => "/js/bootstrap.js"}
+  %script{:src => "/js/build.js"}

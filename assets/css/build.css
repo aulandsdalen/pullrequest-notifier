@@ -1,0 +1,20 @@
+.footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 60px;
+}
+p.version {
+color: #333;
+font-size: smaller;
+}
+textarea {
+resize: none;
+}
+.btn-container {
+margin-top: 2em;
+width: 30%;
+}
+.download-anchor {
+display: none;
+}
