@@ -1,9 +1,21 @@
 !!!
-
-- if locals[:login]
-	%p= "welcome, " + locals[:login]
-	%p
-		%a{:href => "/logout"} Logout
-- else
-	%p
-		%a{:href => "/login"} Login
+%html
+	%head
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}/
+		%link{:rel => "stylesheet", :href => "/css/index.css"}/
+	%body
+		.container
+			.row
+				.col-md-6
+					%h1 Janechecks
+					%h3 Для студентов
+			.row
+				.spacer
+					.col-md-4
+						%p
+							%a{:href => "/signup"} Регистрация в системе
+						%p
+							%a{:href => "/build-generator"} Build Generator
+		%footer.footer
+			.container
+				%a{:href => "/login"} Log in

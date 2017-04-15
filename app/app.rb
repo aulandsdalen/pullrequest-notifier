@@ -12,7 +12,7 @@ get '/' do
 	if session?
 		redirect '/requests'
 	else
-		redirect '/login'
+		haml :index
 	end
 end
 
