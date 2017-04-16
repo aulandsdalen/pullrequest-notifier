@@ -40,6 +40,13 @@ get '/requests' do
 	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => APP_VERSION}
 end
 
+get '/requests/:id.json' do
+	id = params[:id]
+	request_table = DB[:pulls].join(:names, :uid => :owner_id)
+	request = request_table.where(:id => id)
+	request.first.to_json
+end
+
 get '/requests/:id' do
 	session!
 	request = DB[:pulls].left_outer_join(:names, :uid => :owner_id).where(:id => params[:id]).first
@@ -219,13 +226,6 @@ get '/requests.json' do
 	request_table = DB[:pulls].join(:names, :uid => :owner_id)
 	requests = request_table.all
 	requests.to_json
-end
-
-get '/requests/:id.json' do
-	id = params[:id]
-	request_table = DB[:pulls].join(:names, :uid => :owner_id)
-	request = request_table.where(:id => id)
-	request.first.to_json
 end
 
 get '/groups.json' do
