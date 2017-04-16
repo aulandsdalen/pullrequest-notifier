@@ -1,0 +1,34 @@
+!!!
+%html
+	%head
+		%title= "Request #{locals[:request][:id]}"
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}/
+	%body
+		= haml :navbar, :locals => {:version => locals[:version], :active_requests => true}
+		.container
+			%h3= "Request by #{locals[:request][:realname]}"
+			%p= "Submitted at #{locals[:request][:created_at]}"
+			%p
+				%a{:href => "#{locals[:request][:link]}"}= "#{locals[:request][:link]}"
+			- if locals[:request][:build_status]
+				%p Build succeeded
+				%p
+					%h5 Build log:
+					%textarea{:cols => "120", :rows => "10", :readonly => true, :style => "resize:none;"}
+						=locals[:request][:build_log]
+				%p
+					%a.btn.btn-success{:href => "#{locals[:request][:id]}/log"} 
+						%span.glyphicon.glyphicon-download-alt
+						Download log
+			- elsif locals[:request][:build_status].nil?
+				%p Request wasn't AC'ed
+			- else
+				%p Build failed
+				%p
+					%h5 Build log:
+					%textarea{:cols => "120", :rows => "10", :readonly => true, :style => "resize:none;"}
+						=locals[:request][:build_log]
+				%p
+					%a.btn.btn-danger{:href => "#{locals[:request][:id]}/log"} 
+						%span.glyphicon.glyphicon-download-alt
+						Download log
