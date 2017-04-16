@@ -40,6 +40,10 @@ get '/requests' do
 	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => APP_VERSION}
 end
 
+get '/requests/:id' do
+	session!
+end
+
 get '/students' do
 	session!
 	students_table = DB[:names].left_outer_join(:groups, :gid => :group_id).order(Sequel.asc(:uid))
@@ -58,7 +62,8 @@ get '/students/:sid' do
 	haml :user, :locals => {:data => user, :reqs => pulls, :version => APP_VERSION}
 end
 
-get '/students/:sid/delete' do 
+get '/students/:sid/delete' do
+	session! 
 	DB[:names].where(:uid => params[:sid]).delete
 	redirect '/students'
 end
@@ -69,6 +74,17 @@ get '/students/:sid/edit' do
 	user = users_table.where(:uid => params[:sid]).first
 	groups = DB[:groups].all
 	haml :user_edit, :locals => {:user => user, :groups => groups, :version => APP_VERSION}
+end
+
+get '/tasks' do
+	session!
+	tasks_table = DB[:tasks].left_outer_join(:mgmt, :id => :assigned_by)
+	tasks = tasks_table.all
+	haml :tasks, :locals => {:tasks => tasks, :version => APP_VERSION}
+end
+
+get '/tasks/:tid' do 
+	# show all requests related to this particular tid
 end
 
 get '/logout' do
@@ -110,38 +126,60 @@ end
 
 
 post '/gh-event' do
+	# for tasks: 
+	# full repo url is sent as payload['repository']['html_url']
+	# github sends probe request when initializing new webhook
+	# these requests have payload['zen'] field, while pull-request doesn't
 	payload = JSON.parse(request.body.read)
-	action = payload['action']
-	url = payload['pull_request']['html_url']
-	created_at = payload['pull_request']['created_at']
-	is_merged = payload['pull_request']['merged']
-	creator = payload['pull_request']['user']['login']
-	user = DB[:names][:username => creator]
-	if user
-		user_id = user[:uid]
+	if payload['zen']
+		# new repo initialized by github 
+		# when a new repo initialized, task's creator defaults to id=1
+		logger.info "new repo initialized, zen was #{payload['zen']}"
+		DB[:tasks].insert(:assigned_by => 1,
+						  :url => payload['repository']['html_url'],
+						  :created_at => payload['repository']['created_at']) # will use repo creation date here
+		{:status => true}.to_json
 	else
-		DB[:names].insert(:username => creator, :realname => 'UNKNOWN')
-		logger.info 'new username #{creator}'
-		user_id = DB[:names][:username => creator][:uid]
-	end
-	if action == 'opened'
-		logger.info "new pull_request opened"
-		DB[:pulls].insert(:owner_id => user_id, 
-						  :is_open => true, 
-						  :is_merged => is_merged, 
-						  :link => url, 
-						  :created_at => created_at)
-		{:status => true}.to_json
-	elsif (action == 'closed' && is_merged)
-		logger.info "pull request merged"
-		DB[:pulls].where(:link => url).update(:is_open => false, :is_merged => true)
-		send_status_email(user[:email], url, true)
-		{:status => true}.to_json
-	elsif (action == 'closed' && !is_merged)
-		logger.info "pull request closed without merging"
-		DB[:pulls].where(:link => url).update(:is_open => false)
-		send_status_email(user[:email], url, false)
-		{:status => true}.to_json
+		action = payload['action']
+		url = payload['pull_request']['html_url']
+		repo_url = payload['repository']['html_url'] # upstream
+		created_at = payload['pull_request']['created_at']
+		is_merged = payload['pull_request']['merged']
+		creator = payload['pull_request']['user']['login']
+		user = DB[:names][:username => creator]
+		if user
+			user_id = user[:uid]
+		else
+			DB[:names].insert(:username => creator, :realname => 'UNKNOWN')
+			logger.info "new username #{creator}"
+			user_id = DB[:names][:username => creator][:uid]
+		end
+		if action == 'opened'
+			logger.info "new pull_request opened"
+			task = DB[:tasks].where(:url => repo_url).first
+			if task.nil?
+				task_id = 0
+			else
+				task_id = task[:task_id]
+			end
+			DB[:pulls].insert(:owner_id => user_id, 
+							  :is_open => true, 
+							  :is_merged => is_merged, 
+							  :link => url, 
+							  :created_at => created_at,
+							  :tid => task_id)
+			{:status => true}.to_json
+		elsif (action == 'closed' && is_merged)
+			logger.info "pull request merged"
+			DB[:pulls].where(:link => url).update(:is_open => false, :is_merged => true)
+			send_status_email(user[:email], url, true)
+			{:status => true}.to_json
+		elsif (action == 'closed' && !is_merged)
+			logger.info "pull request closed without merging"
+			DB[:pulls].where(:link => url).update(:is_open => false)
+			send_status_email(user[:email], url, false)
+			{:status => true}.to_json
+		end
 	end
 end
 

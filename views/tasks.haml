@@ -1,0 +1,24 @@
+!!!
+%html
+	%head
+		%title Tasks
+		%link{:rel => "stylesheet", :href => "/css/bootstrap.css"}/
+	%body
+		= haml :navbar, :locals => {:version => locals[:version], :active_tasks => true}
+		.container
+			%table.table.table-striped
+				%thead
+					%tr
+						%td task_id
+						%td assigned_by
+						%td assigned_by_login
+						%td url
+						%td created_at
+				%tbody
+				- locals[:tasks].each do |task|
+					%tr
+						%td= task[:task_id]
+						%td= task[:assigned_by]
+						%td= task[:login]
+						%td= task[:url]
+						%td= task[:created_at]

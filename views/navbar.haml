@@ -7,6 +7,8 @@
 				%a{:href => "/requests"} Requests
 			%li{:class => ("active" if locals[:active_users])}
 				%a{:href => "/students"} Students
+			%li{:class => ("active" if locals[:active_tasks])}
+				%a{:href => "/tasks"} Tasks
 			%li{:class => ("active" if locals[:active_info])}
 				%a{:href => "/info"} Info
 		.navbar-collapse.collapse
