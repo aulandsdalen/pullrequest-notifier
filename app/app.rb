@@ -42,6 +42,20 @@ end
 
 get '/requests/:id' do
 	session!
+	request = DB[:pulls].left_outer_join(:names, :uid => :owner_id).where(:id => params[:id]).first
+	haml :request, :locals => {:request => request, :version => APP_VERSION}
+end
+
+get '/requests/:id/log' do
+	# form and download log file
+	_r = DB[:pulls].where(:id => params[:id]).first
+	log = _r[:build_log]
+	logfile = Tempfile.new('build')
+	logfile.write("** GENERATED WITH janechecks #{APP_VERSION} **\n\n")
+	logfile.write("build status: #{_r[:build_status]}\n***\n")
+	logfile.write(log)
+	logfile.close
+	send_file(logfile.path, :filename => "build_log_#{_r[:id]}.log")
 end
 
 get '/students' do

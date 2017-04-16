@@ -7,5 +7,5 @@
 		= haml :navbar, :locals => {:version => locals[:version], :active_requests => true}
 		.container
 			.row
-				.col-md-12
+				.col-md-10.col-md-offset-1
 					= haml :pulls_table, :locals => locals
