@@ -6,6 +6,9 @@
 	%body
 		= haml :navbar, :locals => {:version => locals[:version], :active_tasks => true}
 		.container
+			%a.btn.btn-success{:href => "/tasks/new"}
+				%span.glyphicon.glyphicon-plus
+				New task
 			%table.table.table-striped
 				%thead
 					%tr

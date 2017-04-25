@@ -1,0 +1,20 @@
+!!!
+%html
+	%head
+		%link{:rel => :stylesheet, :type => :"text/css", :href => "/css/bootstrap.css"}
+		%title= "Task"
+	%body
+		= haml :navbar, :locals => {:version => locals[:version], :active_tasks => true}
+		.container
+			.row
+				.col-md-12
+					%h3= "Task #{locals[:task][:task_id]}"
+					%p
+						%a{:href => "#{locals[:task][:url]}"}= locals[:task][:url]
+					%p= "Created at #{locals[:task][:created_at]}"
+			.row
+				.col-md-12
+					- if locals[:reqs].length > 0
+						= haml :pulls_table, :locals => locals
+					- else
+						%h3 No pulls related to this task
