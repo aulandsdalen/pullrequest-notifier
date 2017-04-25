@@ -1,6 +1,6 @@
 var emailRegex = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
 
-$.getJSON("/groups.json", function(json){
+$.getJSON("/api/groups.json", function(json){
 	$('#group-select').empty();
 	$('#group_select').append($('<option>').text("Group"));
 	$.each(json, function(i, obj) {

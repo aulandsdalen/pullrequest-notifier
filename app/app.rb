@@ -40,16 +40,10 @@ get '/requests' do
 	haml :pulls, :locals => {:reqs => requests, :login =>session[:login], :version => APP_VERSION}
 end
 
-get '/requests/:id.json' do
-	id = params[:id]
-	request_table = DB[:pulls].join(:names, :uid => :owner_id)
-	request = request_table.where(:id => id)
-	request.first.to_json
-end
 
 get '/requests/:id' do
 	session!
-	request = DB[:pulls].left_outer_join(:names, :uid => :owner_id).where(:id => params[:id]).first
+	request = DB[:pulls].join(:names, :uid => :owner_id).where(:id => params[:id]).first
 	haml :request, :locals => {:request => request, :version => APP_VERSION}
 end
 
@@ -105,7 +99,14 @@ get '/tasks' do
 end
 
 get '/tasks/:tid' do 
-	# show all requests related to this particular tid
+	task_requests_table = DB[:pulls].left_outer_join(:names, :uid => :owner_id).where(:tid => params[:tid])
+	task_requests = task_requests_table.all
+	task = DB[:tasks].where(:task_id => params[:tid]).left_outer_join(:mgmt, :id => :assigned_by).first
+	haml :task, :locals => {:reqs => task_requests, :task => task, :version => APP_VERSION}
+end
+
+get '/tasks/new' do
+	haml :new_task, :locals => {:version => APP_VERSION}
 end
 
 get '/logout' do
@@ -222,21 +223,21 @@ end
 
 ### API SECTION ###
 
-get '/requests.json' do
+get '/api/requests.json' do
 	request_table = DB[:pulls].join(:names, :uid => :owner_id)
 	requests = request_table.all
 	requests.to_json
 end
 
-get '/groups.json' do
+get '/api/groups.json' do
 	DB[:groups].order(Sequel.asc(:group_name)).all.to_json
 end
 
-get '/students.json' do
+get '/api/students.json' do
 	DB[:names].all.to_json
 end
 
-get '/session-status.json' do
+get '/api/session-status.json' do
 	if session?
 		{:status => true,
 		 :message => "logged in"}.to_json
@@ -244,6 +245,13 @@ get '/session-status.json' do
 		{:status => false,
 		 :message => "not logged in"}.to_json
 	end
+end
+
+get '/api/requests/:id.json' do
+	id = params[:id]
+	request_table = DB[:pulls].join(:names, :uid => :owner_id)
+	request = request_table.where(:id => id)
+	request.first.to_json
 end
 
 
