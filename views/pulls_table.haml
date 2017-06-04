@@ -1,32 +1,9 @@
 %table.table.table-striped.table-hover
 	%thead
 		%tr
-			%td= 'ac'
-			%td= 'status'
-			%td= 'owner'
-			%td= 'created at'
-			%td= 'link'
-	%tbody 
-	- locals[:reqs].each do |req|
-		%tr{:class => ("success" if req[:is_merged])}
-			%td
-				- if req[:build_status]
-					%span.glyphicon.glyphicon-ok
-				- else
-					%span.glyphicon.glyphicon-remove
-			%td 
-				- if (req[:is_open])
-					= "pending"
-				- elsif (req[:is_merged])
-					= "accepted"
-				- else
-					= "declined"
-			%td
-				- if req[:realname] == 'UNKNOWN'
-					%i
-						%a{:href => '/students/' + req[:uid].to_s} #{req[:username]}
-				- else
-					%a{:href => '/students/' + req[:uid].to_s } #{req[:realname]}
-			%td= req[:created_at]
-			%td
-				%a{:href => "/requests/#{req[:id]}"} #{req[:link]}
+			%th{:"data-dynatable-column" => "build_status"}= 'ac'
+			%th{:"data-dynatable-column" => "is_open"}= 'status'
+			%th{:"data-dynatable-column" => "realname"}= 'owner'
+			%th{:"data-dynatable-column" => "created_at"}= 'created at'
+			%th{:"data-dynatable-column" => "link"}= 'link'
+	%tbody
